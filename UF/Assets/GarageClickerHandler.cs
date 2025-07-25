@@ -2,17 +2,17 @@
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class GarageClickHandler : MonoBehaviour
+public class GarageClickerHandler : MonoBehaviour
 {
     public GameObject garagePopupPanel;
     public TMP_Text popupText;
 
     private static GameObject activePanel = null;
-    private ParkingGarageManager garageManager;
+    private GarageManager garageManager;
 
     private void Start()
     {
-        garageManager = GetComponent<ParkingGarageManager>();
+        garageManager = GetComponent<GarageManager>();
     }
 
     private void OnMouseDown()

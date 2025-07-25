@@ -17,6 +17,12 @@ public class GarageClickerHandler : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (garagePopupPanel == null || popupText == null)
+        {
+            Debug.LogWarning($"GarageClickerHandler on {name} is missing UI references.");
+            return;
+        }
+
         if (activePanel == garagePopupPanel && garagePopupPanel.activeSelf)
         {
             garagePopupPanel.SetActive(false);
@@ -39,7 +45,8 @@ public class GarageClickerHandler : MonoBehaviour
 
     private void Update()
     {
-        if (garagePopupPanel.activeSelf && Input.GetMouseButtonDown(0))
+        if (garagePopupPanel != null && popupText != null &&
+            garagePopupPanel.activeSelf && Input.GetMouseButtonDown(0))
         {
             Vector3 mousePos = Input.mousePosition;
             Camera uiCamera = Camera.main;

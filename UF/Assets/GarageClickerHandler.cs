@@ -13,6 +13,16 @@ public class GarageClickerHandler : MonoBehaviour
     private void Start()
     {
         garageManager = GetComponent<GarageManager>();
+
+        if (garagePopupPanel == null)
+        {
+            garagePopupPanel = GameObject.Find("GaragePopupPanel");
+        }
+
+        if (popupText == null && garagePopupPanel != null)
+        {
+            popupText = garagePopupPanel.GetComponentInChildren<TMP_Text>();
+        }
     }
 
     private void OnMouseDown()

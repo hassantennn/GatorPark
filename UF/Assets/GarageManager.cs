@@ -5,7 +5,11 @@ public class GarageManager : MonoBehaviour
     public int totalSpots = 100;
     private int availableSpots;
 
-    public bool isUserCheckedIn = false; // <-- NEW
+    // Tracks the number of people who have checked in and out of this garage
+    public int TotalCheckIns { get; private set; }
+    public int TotalCheckOuts { get; private set; }
+
+    public bool isUserCheckedIn = false;
 
     void Start()
     {
@@ -17,12 +21,23 @@ public class GarageManager : MonoBehaviour
         return availableSpots;
     }
 
+    public int GetCheckIns()
+    {
+        return TotalCheckIns;
+    }
+
+    public int GetCheckOuts()
+    {
+        return TotalCheckOuts;
+    }
+
     public void CheckIn()
     {
         if (!isUserCheckedIn && availableSpots > 0)
         {
             availableSpots--;
             isUserCheckedIn = true;
+            TotalCheckIns++;
         }
     }
 
@@ -32,6 +47,7 @@ public class GarageManager : MonoBehaviour
         {
             availableSpots++;
             isUserCheckedIn = false;
+            TotalCheckOuts++;
         }
     }
 }

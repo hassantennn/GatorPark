@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ParkingGarageManager : MonoBehaviour
+public class GarageManager : MonoBehaviour
 {
     public int totalSpots = 100;
     private int availableSpots;

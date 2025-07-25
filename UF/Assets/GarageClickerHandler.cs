@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class GarageClickerHandler : MonoBehaviour
+public class GarageClickerHandler : MonoBehaviour, IPointerClickHandler
 {
     public GameObject garagePopupPanel;
     public TMP_Text popupText;
@@ -85,6 +85,31 @@ public class GarageClickerHandler : MonoBehaviour
                         garageManager.CheckOut();
 
                     // Refresh popup text with updated counts
+                    RefreshPopupText();
+                }
+            }
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (garagePopupPanel != null && popupText != null && garagePopupPanel.activeSelf)
+        {
+            Vector2 clickPos = eventData.position;
+            Camera eventCamera = eventData.pressEventCamera;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(popupText.rectTransform, clickPos, eventCamera))
+            {
+                int linkIndex = TMP_TextUtilities.FindIntersectingLink(popupText, clickPos, eventCamera);
+                if (linkIndex != -1)
+                {
+                    string linkID = popupText.textInfo.linkInfo[linkIndex].GetLinkID();
+
+                    if (linkID == "CheckIn" && garageManager != null)
+                        garageManager.CheckIn();
+                    else if (linkID == "CheckOut" && garageManager != null)
+                        garageManager.CheckOut();
+
                     RefreshPopupText();
                 }
             }

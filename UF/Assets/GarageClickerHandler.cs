@@ -13,18 +13,34 @@ public class GarageClickerHandler : MonoBehaviour, IPointerClickHandler
     // Helper to update the popup with current availability and totals
     private void RefreshPopupText()
     {
-        if (popupText == null || garageManager == null)
+        Debug.Log("RefreshPopupText called");
+
+        if (garageManager == null)
+        {
+            Debug.LogWarning("garageManager is null - cannot refresh popup text");
             return;
+        }
+
+        if (popupText == null)
+        {
+            Debug.LogWarning("popupText is null - cannot refresh popup text");
+            return;
+        }
 
         string garageName = gameObject.name;
         int available = garageManager.GetAvailableSpots();
         int ins = garageManager.GetCheckIns();
         int outs = garageManager.GetCheckOuts();
 
-        popupText.text = $"{garageName}\nAvailability: {available} open spots\n" +
-                         $"Checked In: {ins}  Checked Out: {outs}\n\n" +
-                         "<link=\"CheckIn\"><color=#00AAFF><u>Check In</u></color></link>   " +
-                         "<link=\"CheckOut\"><color=#FF4444><u>Check Out</u></color></link>";
+        string text =
+            $"{garageName}\nAvailability: {available} open spots\n" +
+            $"Checked In: {ins}  Checked Out: {outs}\n\n" +
+            "<link=\"CheckIn\"><color=#00AAFF><u>Check In</u></color></link>   " +
+            "<link=\"CheckOut\"><color=#FF4444><u>Check Out</u></color></link>";
+
+        popupText.text = text;
+
+        Debug.Log($"Popup text set to: {text}");
     }
 
     private void Start()

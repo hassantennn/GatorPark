@@ -10,6 +10,23 @@ public class GarageClickerHandler : MonoBehaviour
     private static GameObject activePanel = null;
     private GarageManager garageManager;
 
+    // Helper to update the popup with current availability and totals
+    private void RefreshPopupText()
+    {
+        if (popupText == null || garageManager == null)
+            return;
+
+        string garageName = gameObject.name;
+        int available = garageManager.GetAvailableSpots();
+        int ins = garageManager.GetCheckIns();
+        int outs = garageManager.GetCheckOuts();
+
+        popupText.text = $"{garageName}\nAvailability: {available} open spots\n" +
+                         $"Checked In: {ins}  Checked Out: {outs}\n\n" +
+                         "<link=\"CheckIn\"><color=#00AAFF><u>Check In</u></color></link>   " +
+                         "<link=\"CheckOut\"><color=#FF4444><u>Check Out</u></color></link>";
+    }
+
     private void Start()
     {
         garageManager = GetComponent<GarageManager>();
@@ -41,13 +58,7 @@ public class GarageClickerHandler : MonoBehaviour
         else
         {
             garagePopupPanel.SetActive(true);
-
-            string garageName = gameObject.name;
-            int available = garageManager != null ? garageManager.GetAvailableSpots() : 0;
-
-            popupText.text = $"{garageName}\nAvailability: {available} open spots\n\n" +
-                             "<link=\"CheckIn\"><color=#00AAFF><u>Check In</u></color></link>   " +
-                             "<link=\"CheckOut\"><color=#FF4444><u>Check Out</u></color></link>";
+            RefreshPopupText();
 
             activePanel = garagePopupPanel;
         }
@@ -73,14 +84,29 @@ public class GarageClickerHandler : MonoBehaviour
                     else if (linkID == "CheckOut" && garageManager != null)
                         garageManager.CheckOut();
 
-                    // Refresh popup text
-                    string garageName = gameObject.name;
-                    int available = garageManager.GetAvailableSpots();
-                    popupText.text = $"{garageName}\nAvailability: {available} open spots\n\n" +
-                                     "<link=\"CheckIn\"><color=#00AAFF><u>Check In</u></color></link>   " +
-                                     "<link=\"CheckOut\"><color=#FF4444><u>Check Out</u></color></link>";
+                    // Refresh popup text with updated counts
+                    RefreshPopupText();
                 }
             }
+        }
+    }
+
+    // Methods that can be hooked up to Unity UI buttons
+    public void OnCheckInButton()
+    {
+        if (garageManager != null)
+        {
+            garageManager.CheckIn();
+            RefreshPopupText();
+        }
+    }
+
+    public void OnCheckOutButton()
+    {
+        if (garageManager != null)
+        {
+            garageManager.CheckOut();
+            RefreshPopupText();
         }
     }
 }
